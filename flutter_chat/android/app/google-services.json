@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "3927768133",
+    "firebase_url": "https://flutter-chat-hemathraj.firebaseio.com",
+    "project_id": "flutter-chat-hemathraj",
+    "storage_bucket": "flutter-chat-hemathraj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3927768133:android:dcbcd1e4a6ed4df9",
+        "android_client_info": {
+          "package_name": "in.hemanthraj.flutterchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3927768133-qlc8u5bugjb0nqlfbtek6a4qsmlel5pq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-1dglH9eAnwWdjzNCdVM2Rql1c0HMke8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
