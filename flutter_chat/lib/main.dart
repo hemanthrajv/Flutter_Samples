@@ -51,6 +51,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   _ChatScreenState() {
     _ensureLoggedIn();
+    reference.onChildAdded.listen((Event event){
+      setState((){});
+    });
   }
 
   Future<Null> _ensureLoggedIn() async {
@@ -103,13 +106,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 onPressed: () async {
                   await _ensureLoggedIn();
                   File imageFile = await ImagePicker.pickImage();
+                  String timeStamp = new DateTime.now().toIso8601String();
                   await new Future.delayed(new Duration(milliseconds: 500));
                   I.Image _img = I.decodeImage(imageFile.readAsBytesSync());
                   if (_img.width > 720) {
                     _img = I.copyResize(_img, 720);
                   }
                   String dir = (await getTemporaryDirectory()).path;
-                  String timeStamp = new DateTime.now().toIso8601String();
                   File newImage = new File(dir + timeStamp + ".jpg");
                   newImage.writeAsBytesSync(I.encodeJpg(_img));
                   StorageReference ref = FirebaseStorage.instance
@@ -124,6 +127,7 @@ class _ChatScreenState extends State<ChatScreen> {
           new Flexible(
               child: new TextField(
             controller: _controller,
+            style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.black),
             onChanged: (String text) => setState(() {
                   _isComposing = text.length > 0;
                 }),
@@ -248,9 +252,13 @@ class Message extends StatelessWidget {
                               child: const LinearProgressIndicator(),
                               height: 2.0,
                             ),
-                            new Image(
-                                image: new CachedNetworkImageProvider(
-                                    snapshot.value["imageUrl"]))
+                            new InkResponse(
+                              child: new Hero(tag: snapshot.value["imageUrl"], child: new Image(
+                                  image: new CachedNetworkImageProvider(
+                                      snapshot.value["imageUrl"]))),onTap: () => Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context){
+                                        return new ViewImage(url: snapshot.value["imageUrl"],);
+                            })),
+                            ),
                           ],
                         )
                       : new Text(
@@ -265,3 +273,23 @@ class Message extends StatelessWidget {
     );
   }
 }
+
+class ViewImage extends StatelessWidget {
+
+  final String url;
+
+  ViewImage({this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Image"),
+      ),
+      body: new Center(
+        child: new Hero(tag: url, child: new Image(image: new CachedNetworkImageProvider(url))),
+      ),
+    );
+  }
+}
+
